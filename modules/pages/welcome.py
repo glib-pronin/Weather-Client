@@ -1,7 +1,7 @@
 from ..components import page_layout, CustomButton
 import flet
 
-def welcome_page(page: flet.Page, container):
+def welcome_page(page: flet.Page):
 
     async def on_click():
         await page.push_route('/login')

@@ -1,11 +1,26 @@
 from ..components import page_layout, CustomButton, CustomInput
+from ..utils import change_spinner_visibility
 import flet
 
-def login_page(page: flet.Page, container):
+def login_page(page: flet.Page):
 
-    def on_login():
-        ...
+    async def on_login(e):
+        email_input.error = None
+        change_spinner_visibility(page, spinner, login_btn, True)
 
+        email = email_input.value.strip()
+        password = password_input.value.strip()
+        res = await page.app_container.auth_manager.login(email, password)
+        if res:
+            await page.app_container.resolve_route(page, page.app_container.auth_manager)
+        else:
+            email_input.error = 'Неправильні адреса або пароль'
+            change_spinner_visibility(page, spinner, login_btn, False)
+
+    spinner = flet.ProgressRing(height=40, width=40, color='#0D133F', visible=False)
+    email_input = CustomInput('Введіть електронну пошту')
+    password_input = CustomInput('Введіть пароль', True, True)
+    login_btn = CustomButton(content='Увійти до акаунту', on_click=on_login)
     content = flet.Column(
         spacing=44,
         horizontal_alignment=flet.CrossAxisAlignment.CENTER,
@@ -19,8 +34,8 @@ def login_page(page: flet.Page, container):
             flet.Column(
                 spacing=16,
                 controls=[
-                    CustomInput('Введіть електронну пошту'),
-                    CustomInput('Введіть пароль', True, True),
+                    email_input,
+                    password_input,
                     flet.GestureDetector(
                         content=flet.Text(
                             value='Ще немає акаунту? Зараєструватися',
@@ -33,10 +48,8 @@ def login_page(page: flet.Page, container):
                     )
                 ]
             ),
-            CustomButton(
-                content='Увійти до акаунту',
-                on_click=on_login
-            )
+            login_btn,
+            spinner
         ]
     )
     return page_layout(page, '/login', content)
