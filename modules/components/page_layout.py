@@ -9,7 +9,7 @@ def page_layout(page: flet.Page, route, content, show_back=False):
             BackButton(
                 'Назад',
                 text_color='#0D133F',
-                on_click=lambda e: page.run_task(page.push_route, '/home')
+                on_click=lambda e: page.run_task(page.app_container.resolve_route, page, page.app_container.auth_manager)
             )
         )
         top=0

@@ -20,7 +20,7 @@ class CustomInput(flet.TextField):
         )
 
 class InputWithIcons(flet.Container):
-    def __init__(self, placeholder, *args, **kwargs):
+    def __init__(self, placeholder, on_suffix_click=None, on_change=None, *args, **kwargs):
         super().__init__(
             width=335,
             height=40,
@@ -33,7 +33,8 @@ class InputWithIcons(flet.Container):
         self.prefix_icon = flet.Icon(flet.Icons.SEARCH, color='#ffffff', size=22)
         self.suffix_icon = flet.GestureDetector(
             flet.Image(src='close_icon.png', width=20, height=20),
-            mouse_cursor=flet.MouseCursor.CLICK
+            mouse_cursor=flet.MouseCursor.CLICK,
+            on_tap=on_suffix_click
         )
         self.input = flet.TextField(
             hint_text=placeholder,
@@ -42,6 +43,7 @@ class InputWithIcons(flet.Container):
             content_padding=flet.Padding.symmetric(vertical=0),
             text_style=flet.TextStyle(color='#FFFFFF', size=16, height=1),
             hint_style=flet.TextStyle(color='#FFFFFF', size=16, height=1),
+            on_change=on_change
         )
         self.content = flet.Row(
             vertical_alignment=flet.CrossAxisAlignment.CENTER,
@@ -53,17 +55,14 @@ class InputWithIcons(flet.Container):
             ]
         )
     
-    def set_opacity(self, value, update=False):
+    def set_value(self, value):
+        self.input.value = value
+
+    def set_opacity(self, value):
         self.opacity = value
-        if update:
-            self.update()
 
-    def set_disability(self, disabled, update=False):
+    def set_disabed(self, disabled):
         self.input.disabled = disabled
-        if update:
-            self.input.update()
 
-    def set_suffix_icon_visibility(self, visible, update=False):
+    def set_suffix_icon_visible(self, visible):
         self.suffix_icon.visible = visible
-        if update:
-            self.input.update()

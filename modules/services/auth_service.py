@@ -1,6 +1,6 @@
 class AuthService:
     def __init__(self, api):
-        self.api=api
+        self.api = api
 
     async def login(self, email, password):
         return await self.api.request(

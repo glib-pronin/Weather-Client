@@ -17,6 +17,11 @@ class ApiClient:
     def set_refresh(self, refresh):
         self.refresh = refresh
 
+    def build_url(self, url):
+        if url.startswith(('http://', 'https://')):
+            return url
+        return f'{self.base_url}{url}'
+
     def get_headers(self):
         headers = {'Content-Type': 'application/json'}
         if self.access:
@@ -25,8 +30,8 @@ class ApiClient:
     
     async def request(self, method, url, json=None, headers=None):
         if self.client is None:
-            self.client = httpx.AsyncClient(base_url=self.base_url)
-        return await self.client.request(method=method, url=url, json=json, headers=headers)
+            self.client = httpx.AsyncClient()
+        return await self.client.request(method=method, url=self.build_url(url), json=json, headers=headers)
     
     async def auth_request(self, method, url, json=None):
         res = await self.request(

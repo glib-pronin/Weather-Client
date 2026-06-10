@@ -8,6 +8,7 @@ class CustomButton(flet.Button):
             bgcolor='#0D133F',
             color='#FFFFFF',
             width=335,
+            height=52,
             opacity=opacity, 
             disabled=disabled,
             style=flet.ButtonStyle(

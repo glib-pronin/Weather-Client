@@ -53,3 +53,6 @@ class AuthManager:
 
     async def save_access(self, access):
         await self.storage.set('access', access)
+
+    def set_user(self, new_user_data):
+        self.user = new_user_data

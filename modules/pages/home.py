@@ -1,4 +1,4 @@
-from ..components import BackButton
+from ..components import BackButton, CustomButton
 import flet
 
 def home_page(page: flet.Page):
@@ -9,11 +9,16 @@ def home_page(page: flet.Page):
         horizontal_alignment=flet.CrossAxisAlignment.STRETCH,
         controls=[
             flet.SafeArea(
-                BackButton(
-                    'Вибрати інше місто',
-                    '#ffffff',
-                    lambda e: page.run_task(page.push_route, '/select-country-city?show-back=1')
-                )
+                content=flet.Column(
+                    controls=[
+                        BackButton(
+                            'Вибрати інше місто',
+                            '#ffffff',
+                            lambda e: page.run_task(page.push_route, '/select-country-city?show-back=1')
+                        ), 
+                        CustomButton('Logout', lambda e: page.run_task(page.app_container.auth_manager.logout))
+                    ]
+                ),
             ),
         ]
     )
