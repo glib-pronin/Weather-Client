@@ -4,7 +4,7 @@ class SuggestionItem(flet.GestureDetector):
     def __init__(self, text, data, on_click, *args, **kwargs):
         super().__init__(
             content=flet.Container(
-                height=32,
+                padding=flet.Padding.symmetric(vertical=8, horizontal=0),
                 alignment=flet.Alignment.CENTER_LEFT,
                 content=flet.Text(
                     value=text,
@@ -36,7 +36,6 @@ class SuggestionsContainer(flet.Container):
         self.list_view = flet.ListView(
             spacing=0,
             padding=0,
-            height=0
         )
 
         self.content = flet.Column(

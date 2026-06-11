@@ -16,6 +16,10 @@ def home_page(page: flet.Page):
                             '#ffffff',
                             lambda e: page.run_task(page.push_route, '/select-country-city?show-back=1')
                         ), 
+                        flet.Text(
+                            page.app_container.auth_manager.user['city'],
+                            color='black'
+                        ),
                         CustomButton('Logout', lambda e: page.run_task(page.app_container.auth_manager.logout))
                     ]
                 ),

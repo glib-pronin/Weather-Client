@@ -28,17 +28,18 @@ class ApiClient:
             headers.update({'Authorization': f'Bearer {self.access}'})
         return headers
     
-    async def request(self, method, url, json=None, headers=None):
+    async def request(self, method, url, json=None, headers=None, params=None):
         if self.client is None:
             self.client = httpx.AsyncClient()
-        return await self.client.request(method=method, url=self.build_url(url), json=json, headers=headers)
+        return await self.client.request(method=method, url=self.build_url(url), json=json, headers=headers, params=params)
     
-    async def auth_request(self, method, url, json=None):
+    async def auth_request(self, method, url, json=None, params=None):
         res = await self.request(
             method=method,
             url=url, 
             json=json,
-            headers=self.get_headers()
+            headers=self.get_headers(),
+            params=params
         )
         if res.status_code == 401:
             refreshed = await self.refresh_access_token(self.refresh)
