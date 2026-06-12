@@ -24,22 +24,25 @@ class BackButton(flet.Container):
     def __init__(self, value, text_color, on_click, *args, **kwargs):
         super().__init__(
             height=41,
+            align=flet.Alignment.TOP_LEFT,
             on_click=on_click,
             content=flet.Row(
                 alignment=flet.MainAxisAlignment.START,
                 vertical_alignment=flet.CrossAxisAlignment.CENTER,
-                expand=True,
                 spacing=5,
+                tight=True,
                 controls=[
                     flet.Icon(
                         icon=flet.Icons.ARROW_BACK_ROUNDED,
                         color=text_color,
-                        size=18
+                        size=18,
                     ),
-                    flet.Text(
-                        value=value,
-                        size=12,
-                        color=text_color,
+                    flet.Container(
+                        content=flet.Text(
+                            value=value,
+                            size=12,
+                            color=text_color,
+                        )
                     )
                 ]
             ),

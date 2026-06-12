@@ -7,11 +7,15 @@ class LocationService:
         self.selected_country = None
         self.selected_country_code = None
         self.selected_city = None
+        self.selected_lat = None
+        self.selected_lng = None
 
-    def set_location(self, country, country_code, city):
+    def set_location(self, country, country_code, city, lat, lng):
         self.selected_country = country
         self.selected_country_code = country_code
         self.selected_city = city
+        self.selected_lat = lat
+        self.selected_lng = lng
 
     async def load_countries(self):
         if not self.countries:
@@ -24,9 +28,9 @@ class LocationService:
 
     async def save_selection(self, old_data=None):
         if old_data and (
-            old_data['country'] == self.selected_country
-            and old_data['country_code'] == self.selected_country_code
-            and old_data['city'] == self.selected_city
+            old_data['city'] == self.selected_city
+            and old_data['lat'] == float(self.selected_lat)
+            and old_data['lng'] == float(self.selected_lng)
         ):
             return old_data
         res = await self.api.auth_request(
@@ -35,7 +39,9 @@ class LocationService:
             json={
                 'country': self.selected_country,
                 'country_code': self.selected_country_code,
-                'city': self.selected_city
+                'city': self.selected_city,
+                'lat': self.selected_lat,
+                'lng': self.selected_lng,
             }
         )
         if res.status_code == 200:
@@ -87,7 +93,9 @@ class LocationService:
 
             cities.append({
                 'name': name,
-                'display_name': display_name
+                'display_name': display_name,
+                'lat': city.get('lat'),
+                'lng': city.get('lng')
             })
         return cities
             

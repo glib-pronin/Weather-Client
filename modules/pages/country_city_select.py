@@ -7,7 +7,10 @@ def country_city_select_page(page: flet.Page):
     location_service = page.app_container.location_service
     debounce = Debounce(300, page)
     page.run_task(location_service.load_countries)
-    location_service.set_location(auth.user['country'], auth.user['country_code'], auth.user['city'])
+    location_service.set_location(
+        auth.user['country'], auth.user['country_code'], 
+        auth.user['city'], auth.user['lat'], auth.user['lng']
+    )
 
     show_back = 'show-back=1' in page.route
 
@@ -88,6 +91,8 @@ def country_city_select_page(page: flet.Page):
 
     def on_city_selected(city):
         location_service.selected_city = city['name']
+        location_service.selected_lat = city['lat']
+        location_service.selected_lng = city['lng']
         city_input.set_value(city['name'])
         city_input.set_disabed(True)
         city_input.set_suffix_icon_visible(True)
