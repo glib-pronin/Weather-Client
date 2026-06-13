@@ -49,7 +49,7 @@ class LocationService:
         return None
 
     async def clear_location(self):
-        self.set_location(None, None, None)
+        self.set_location(None, None, None, None, None)
         res = await self.save_selection()
         return res
     

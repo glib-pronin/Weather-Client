@@ -25,10 +25,40 @@ def home_page(page: flet.Page):
                                 'Вибрати інше місто',
                                 '#ffffff',
                                 lambda e: page.run_task(page.push_route, '/select-country-city?show-back=1')
-                            ), 
-                            flet.Text(
-                                page.app_container.auth_manager.user['city'],
-                                color='black'
+                            ),
+                            flet.Row(
+                                vertical_alignment=flet.CrossAxisAlignment.CENTER,
+                                controls=[
+                                    flet.Container(
+                                        width=343,
+                                        height=266,
+                                        bgcolor='red',
+                                        content=flet.Column(
+                                            horizontal_alignment=flet.CrossAxisAlignment.CENTER,
+                                            controls=[
+                                                flet.Text(page.app_container.auth_manager.user['city']),
+                                                flet.Row(
+                                                    controls=[      
+                                                        flet.Stack(
+                                                            clip_behavior=flet.ClipBehavior.NONE,
+                                                            controls=[            
+                                                                flet.Image(
+                                                                    top=-115,
+                                                                    left=-65,
+                                                                    src='icons_png/01n.png', width=340, height=340
+                                                                ),
+                                                                flet.Text(
+                                                                    '11',
+                                                                    color='black', size=74, margin=flet.Margin.only(left=157)
+                                                                )
+                                                            ]
+                                                        )
+                                                    ]
+                                                )
+                                            ]    
+                                        )  
+                                    ),
+                                ]
                             ),
                             CustomButton('Logout', lambda e: page.run_task(page.app_container.auth_manager.logout))
                         ]
