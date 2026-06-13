@@ -45,7 +45,7 @@ def home_page(page: flet.Page):
                                                                 flet.Image(
                                                                     top=-115,
                                                                     left=-65,
-                                                                    src='icons_png/01n.png', width=340, height=340
+                                                                    src='icons_png/50n.png', width=340, height=340
                                                                 ),
                                                                 flet.Text(
                                                                     '11',

@@ -14,7 +14,8 @@ class CustomInput(flet.TextField):
             text_style=flet.TextStyle(color='#FFFFFF', size=16),
             hint_style=flet.TextStyle(color='#FFFFFF', size=16),
             content_padding=flet.Padding.all(7),
-            border_color='#A0ABBA',
+            border_width=0,
+            error_style=flet.TextStyle(color='red'),
             on_change=on_change,
             *args, **kwargs
         )

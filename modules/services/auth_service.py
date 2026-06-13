@@ -15,6 +15,13 @@ class AuthService:
             url='register/',
             json={'email': email, 'password': password, 'confirm_password': confirm_password}
         )
+    
+    async def verify_email(self, email, code):
+        return await self.api.request(
+            method='POST',
+            url='verify-email/',
+            json={'email': email, 'code': code}
+        )
 
     async def me(self):
         return await self.api.auth_request('GET', 'me/')

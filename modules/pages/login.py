@@ -10,10 +10,13 @@ def login_page(page: flet.Page):
 
         email = email_input.value.strip()
         password = password_input.value.strip()
-        res = await page.app_container.auth_manager.login(email, password)
+        res, msg = await page.app_container.auth_manager.login(email, password)
         if res:
             await page.app_container.resolve_route(page, page.app_container.auth_manager)
         else:
+            if msg == 'need_verify':
+                await page.push_route('/verify_email')
+                return
             email_input.error = 'Неправильні адреса або пароль'
             change_spinner_visibility(page, spinner, login_btn, False)
 

@@ -29,7 +29,7 @@ def register_page(page: flet.Page):
             return
         res = await page.app_container.auth_manager.register(email, password, confirm_password)
         if res:
-            await page.app_container.resolve_route(page, page.app_container.auth_manager)
+            await page.push_route('/verify_email')
         else:
             email_input.error = 'Вже існує акаунт з такою поштою'
             change_spinner_visibility(page, spinner, register_btn, False)
