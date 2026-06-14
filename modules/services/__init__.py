@@ -1,2 +1,3 @@
 from .auth_service import AuthService
-from .location_servise import LocationService
+from .location_service import LocationService
+from .weather_service import WeatherService

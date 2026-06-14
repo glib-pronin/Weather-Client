@@ -21,9 +21,9 @@ class CustomButton(flet.Button):
         )
 
 class BackButton(flet.Container):
-    def __init__(self, value, text_color, on_click, *args, **kwargs):
+    def __init__(self, value, text_color, on_click, height=41, *args, **kwargs):
         super().__init__(
-            height=41,
+            height=height,
             align=flet.Alignment.TOP_LEFT,
             on_click=on_click,
             content=flet.Row(
@@ -48,4 +48,3 @@ class BackButton(flet.Container):
             ),
             *args, **kwargs
         )
-        
