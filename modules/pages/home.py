@@ -6,7 +6,7 @@ def home_page(page: flet.Page):
     weather_service = page.app_container.weather_service
 
     async def load_weather():
-        data = await weather_service.fetch_weather(user['lat'], user['lng'], user['city'])
+        data = await weather_service.get_weather(user['lat'], user['lng'], user['city'])
         current_weather.set_data(data['current'])
         await hourly_weather.set_data(data['hourly'].get('hours'), data['hourly'].get('general'))
         daily_weather.set_data(data['daily'])

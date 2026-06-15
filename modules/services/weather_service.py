@@ -1,11 +1,12 @@
 from ..core.config import WEATHER_API_KEY, OPENWEATHER_API_KEY
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 import asyncio
 
 class WeatherService:
     def __init__(self, api):
         self.api = api
+        self.cache = {}
 
         self.weather_code_map = {
             "1000": "01",
@@ -57,6 +58,18 @@ class WeatherService:
             "1279": "11",
             "1282": "11",
         }
+
+    async def get_weather(self, lat, lng, city_name, ttl=600):
+        now = int(datetime.now(timezone.utc).timestamp())
+        key = f'{lat},{lng}'
+        print(key in self.cache)
+        if key in self.cache:
+            data = self.cache[key]
+            if now - data['timestamp'] < ttl:
+                return data['data']
+        fetch_data = await self.fetch_weather(lat, lng, city_name)
+        self.cache[key] = {'data': fetch_data, 'timestamp': now}
+        return fetch_data
 
     async def fetch_weather(self, lat, lng, city_name):
         current_hourly_data, daily_data = await asyncio.gather(
