@@ -1,20 +1,15 @@
 from ..components import *
-import flet, asyncio
+import flet
 
 def home_page(page: flet.Page):
     user = page.app_container.auth_manager.user
+    weather_service = page.app_container.weather_service
 
     async def load_weather():
-        # await asyncio.sleep(1)
-        current_weather.set_data({
-            'city_name': user['city'],
-            'icon_code': '01d',
-            'temp': '11°',
-            'desc': 'Хмарно',
-            'max_min': 'Макс.:11°, мін.:0°'
-        })
-        hourly_weather.set_data([{'hour': i, 'icon': '02d', 'temp': '11°'} for i in range(23)], 'Хмарна погода до кінця дня')
-        daily_weather.set_data([{'text': 'Сб', 'icon': '01d', 'max': '11°', 'min': '1°'} for i in range(5)], '5-Денний прогноз')
+        data = await weather_service.fetch_weather(user['lat'], user['lng'], user['city'])
+        current_weather.set_data(data['current'])
+        await hourly_weather.set_data(data['hourly'].get('hours'), data['hourly'].get('general'))
+        daily_weather.set_data(data['daily'])
         page.update()
 
     current_weather = CurrentWeatherContainer()

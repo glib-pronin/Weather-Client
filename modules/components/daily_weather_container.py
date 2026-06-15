@@ -1,3 +1,4 @@
+from datetime import datetime
 import flet
 
 class DayBlock(flet.Row):
@@ -43,6 +44,15 @@ class DailyWeatherContainer(flet.Container):
             *args, **kwargs
         )
 
+        self.weekday_map = {
+            'Sunday': 'Нд',
+            'Monday': 'Пн',
+            'Tuesday': 'Вт',
+            'Wednesday': 'Ср',
+            'Thursday': 'Чт',
+            'Friday': 'Пт',
+            'Saturday': 'Сб',
+        }
         self.container_title = flet.Text(value='Завантажуємо прогноз...', size=16, color='#ffffff')
         self.daily_list = flet.Column(spacing=8)
 
@@ -61,15 +71,24 @@ class DailyWeatherContainer(flet.Container):
             ]
         )
 
-    def set_data(self, data, title):
-        self.container_title.value = title
+    def set_data(self, data):
+        if not data:
+            self.container_title.value = 'Не вдалося завантажити прогноз'
+            self.daily_list.controls = []
+            self.tz_id = None
 
+        self.container_title.value = '5-Денний прогноз'
         controls = []
         for i, d in enumerate(data):
             controls.append(
-                DayBlock(str(d['text']).zfill(2), d['icon'], d['max'], d['min'])
+                DayBlock(self.get_weekday(i, d['date']), d['main']['icon'], d['main']['max'], d['main']['min'])
             )
             if i < len(data) - 1:
                 controls.append(flet.Divider(height=2, color=flet.Colors.with_opacity(0.2, '#ffffff'), expand=True))
 
         self.daily_list.controls = controls
+
+    def get_weekday(self, ind, date):
+        if ind == 0:
+            return 'Сьогодні'
+        return self.weekday_map[datetime.strptime(date, '%Y-%m-%d').strftime('%A')]
