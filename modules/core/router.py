@@ -3,6 +3,7 @@ import flet
 
 def router_change(page: flet.Page):
     page.views.clear()
+    page.app_container.time_manager.cancel_all()
     if page.route == '/welcome':
         page.views.append(welcome_page(page))
     elif page.route == '/login':

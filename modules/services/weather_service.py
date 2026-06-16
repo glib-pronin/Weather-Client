@@ -59,10 +59,9 @@ class WeatherService:
             "1282": "11",
         }
 
-    async def get_weather(self, lat, lng, city_name, ttl=600):
+    async def get_weather(self, lat, lng, city_name, ttl=1800):
         now = int(datetime.now(timezone.utc).timestamp())
         key = f'{lat},{lng}'
-        print(key in self.cache)
         if key in self.cache:
             data = self.cache[key]
             if now - data['timestamp'] < ttl:
@@ -84,7 +83,18 @@ class WeatherService:
             'daily': daily_data
         }
 
-    async def get_current_and_hourly_wetaher(self, lat, lng, city_name):
+    async def update_current_weather(self, lat, lng, city_name):
+        key = f'{lat},{lng}'
+        if not key in self.cache:
+            return 
+        current = await self.get_current_and_hourly_wetaher(lat, lng, city_name, include_hourly=False)
+        if not current:
+            return
+        self.cache[key]['data']['current'] = current['current']
+        return current['current']
+        
+
+    async def get_current_and_hourly_wetaher(self, lat, lng, city_name, include_hourly=True):
         print('current_hourly')
         try:
             res = await self.api.request(
@@ -104,10 +114,10 @@ class WeatherService:
         if res.status_code != 200:
             return {}
         data = res.json()
-        return {
-            'current': self._form_current_data(data, city_name),
-            'hourly': self._form_hourly_data(data),
-        } 
+        result = {'current': self._form_current_data(data, city_name)}
+        if include_hourly:
+            result['hourly'] = self._form_hourly_data(data)
+        return result
     
     def _form_current_data(self, api_data, city_name):
         return {

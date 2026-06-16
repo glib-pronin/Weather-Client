@@ -5,12 +5,18 @@ def home_page(page: flet.Page):
     user = page.app_container.auth_manager.user
     weather_service = page.app_container.weather_service
 
+    async def update_current():
+        data = await weather_service.update_current_weather(user['lat'], user['lng'], user['city'])     
+        current_weather.set_data(data)   
+        page.update()
+
     async def load_weather():
         data = await weather_service.get_weather(user['lat'], user['lng'], user['city'])
         current_weather.set_data(data['current'])
         await hourly_weather.set_data(data['hourly'].get('hours'), data['hourly'].get('general'))
         daily_weather.set_data(data['daily'])
         page.update()
+        page.app_container.time_manager.create_task(update_current, 600)
 
     current_weather = CurrentWeatherContainer()
     hourly_weather = HourlyWeatherContainer()

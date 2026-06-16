@@ -1,6 +1,7 @@
 from .api_client import ApiClient
 from .router import resolve_route
 from .auth_manager import AuthManager
+from .time_manager import TimeManager
 from ..services import AuthService, LocationService, WeatherService
 
 class AppContainer:
@@ -10,6 +11,7 @@ class AppContainer:
         self.resolve_route = resolve_route
         self.location_service = LocationService(self._api_client)
         self.weather_service = WeatherService(self._api_client)
+        self.time_manager = TimeManager()
     
     async def on_close(self, e):
         await self._api_client.close()
