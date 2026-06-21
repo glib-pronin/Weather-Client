@@ -61,6 +61,7 @@ class LocationService:
         ]
     
     async def search_cities(self, query):
+        print('cities')
         res = await self.api.request(
             method='GET',
             url='http://api.geonames.org/searchJSON',

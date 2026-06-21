@@ -49,7 +49,7 @@ def register_page(page: flet.Page):
         confirm_password_input.update()
 
     spinner = flet.ProgressRing(height=40, width=40, color='#0D133F', visible=False)
-    email_input = CustomInput('Введіть електронну пошту')
+    email_input = CustomInput('Введіть електронну пошту', autofill_hints=[flet.AutofillHint.EMAIL])
     password_input = CustomInput('Введіть пароль', True, True, on_change)
     confirm_password_input = CustomInput('Підтвердьте пароль', True, True, on_change)
     register_btn = CustomButton(content='Створити акаунт', on_click=on_register)

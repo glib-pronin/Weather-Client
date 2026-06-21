@@ -21,7 +21,7 @@ def login_page(page: flet.Page):
             change_spinner_visibility(page, spinner, login_btn, False)
 
     spinner = flet.ProgressRing(height=40, width=40, color='#0D133F', visible=False)
-    email_input = CustomInput('Введіть електронну пошту')
+    email_input = CustomInput('Введіть електронну пошту', autofill_hints=[flet.AutofillHint.EMAIL])
     password_input = CustomInput('Введіть пароль', True, True)
     login_btn = CustomButton(content='Увійти до акаунту', on_click=on_login)
     content = flet.Column(

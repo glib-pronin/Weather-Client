@@ -2,6 +2,29 @@ from datetime import datetime
 import flet
 
 class DayBlock(flet.Row):
+    COLOR_MAP = {
+        -21: '#0084FF',
+        -18: '#1B93FF',
+        -15: '#3DA6FF',
+        -12: '#53B3FF',
+        -9: '#5EBCFF',
+        -6: '#5BBEF4',
+        -3: '#67C8F0',
+        0: '#7DD9EB',
+        3: '#FFEDA5',
+        6: '#FFE787',
+        9: '#FFE270',
+        12: '#FFDF5C',
+        15: '#FFDA46',
+        18: '#FFD322',
+        21: '#F1C100',
+        24: '#FF9E05',
+        27: '#E67E22',
+        30: '#CB6104',
+        33: '#CB6104',
+        36: '#FB2B02',
+    }
+
     def __init__(self, text, icon, max, min, *args, **kwargs):
         super().__init__(
             expand=True,
@@ -22,7 +45,7 @@ class DayBlock(flet.Row):
                             gradient=flet.LinearGradient(
                                 begin=flet.Alignment.CENTER_LEFT,
                                 end=flet.Alignment.CENTER_RIGHT,
-                                colors=['#87CEFA', '#FFDF56']
+                                colors=self.get_gradient_colors(int(min[:-1]), int(max[:-1]))
                             )
                         ),
                         flet.Text(max, size=16, color='#ffffff')
@@ -31,6 +54,16 @@ class DayBlock(flet.Row):
             ],
             *args, **kwargs
         )
+
+    def get_gradient_colors(self, min_t, max_t):
+        colors = []
+        min_t = max(-21, min_t)
+        min_t_normalized = round(min_t / 3) * 3
+        colors.append(self.COLOR_MAP[min_t_normalized])
+        max_t = min(36, max_t)
+        max_t_normalized = round(max_t / 3) * 3
+        colors.append(self.COLOR_MAP[max_t_normalized])
+        return colors
 
 class DailyWeatherContainer(flet.Container):
     def __init__(self, *args, **kwargs):
