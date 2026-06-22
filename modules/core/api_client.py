@@ -1,3 +1,4 @@
+from .config import BASE_URL
 import httpx
 
 class ApiClient:
@@ -5,7 +6,7 @@ class ApiClient:
         self.access = None
         self.refresh = None
 
-        self.base_url = 'http://127.0.0.1:8000/api/'
+        self.base_url = f'{BASE_URL}api/'
         self.client = None
 
         self.auth_failed_handler = None
